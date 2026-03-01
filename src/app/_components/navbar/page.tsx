@@ -1,9 +1,12 @@
 'use client'
+import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link'
 import { usePathname } from 'next/navigation';
 import React, { useState } from 'react'
 
 export default function Navbar() {
+    const {status,data:session}=useSession()
+    console.log(status)
     const [isOpen, setisOpen] = useState(false)
     function toggleNav(){
       setisOpen(!isOpen)
@@ -18,6 +21,11 @@ export default function Navbar() {
       { href: "/register", content: "register" },
       { href: "/login", content: "login" },
     ];
+    function logout(){
+      signOut({
+        callbackUrl:'/login'
+      })
+    }
   return (
     <>
       <nav className="bg-gray-500  w-full ">
@@ -56,23 +64,12 @@ export default function Navbar() {
               />
             </svg>
           </button>
-          <div className={`${isOpen && "hidden"} w-full md:flex justify-between `} id="navbar-default">
+          <div
+            className={`${isOpen && "hidden"} w-full md:flex justify-between `}
+            id="navbar-default"
+          >
             <ul className="font-medium flex flex-col p-4 md:p-0 mt-4  rounded-base bg-neutral-secondary-soft md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-neutral-primary">
               {path.map((elem) => {
-                return (
-                  <li key={elem.content}>
-                    <Link
-                      href={elem.href}
-                      className={`${pathName==elem.href && 'active '}block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent`}
-                    >
-                      {elem.content}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-            <ul className="font-medium flex flex-col p-4 md:p-0 mt-4  rounded-base bg-neutral-secondary-soft md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-neutral-primary">
-              {authPath.map((elem) => {
                 return (
                   <li key={elem.content}>
                     <Link
@@ -84,6 +81,31 @@ export default function Navbar() {
                   </li>
                 );
               })}
+            </ul>
+            <ul className="font-medium flex flex-col p-4 md:p-0 mt-4  rounded-base bg-neutral-secondary-soft md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-neutral-primary">
+              {status == "authenticated" ? (
+                <>
+                  <li>hi, {session?.user?.name}</li>
+                  <li onClick={logout} className="cursor-pointer">
+                    Logout
+                  </li>
+                </>
+              ) : (
+                <>
+                  {authPath.map((elem) => {
+                    return (
+                      <li key={elem.content}>
+                        <Link
+                          href={elem.href}
+                          className={`${pathName == elem.href && "active "}block py-2 px-3 text-heading rounded hover:bg-neutral-tertiary md:hover:bg-transparent md:border-0 md:hover:text-fg-brand md:p-0 md:dark:hover:bg-transparent`}
+                        >
+                          {elem.content}
+                        </Link>
+                      </li>
+                    );
+                  })}
+                </>
+              )}
             </ul>
           </div>
         </div>

@@ -38,6 +38,18 @@ export const authOptions:NextAuthOptions = {
                     }
             }
         })
-    ]
-
+    ],
+    callbacks:{
+        jwt:({token,user}) =>{
+            if(user){
+                token.user=user.user
+                token.token = user.token
+            }
+            return token
+        } ,
+        session:({session,token})=>{
+            session.user=token.user as typeof session.user
+            return session
+        }
+    }
 }
