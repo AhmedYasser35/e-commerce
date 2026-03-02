@@ -6,7 +6,18 @@ import React, { useState } from 'react'
 import logo from '../../../../assets/images/freshcart-logo.svg'
 import Image from 'next/image';
 import { DropdownMenuIcons } from '../dropDown/page';
+import { useQuery } from '@tanstack/react-query';
+import { CartResponse } from '@/app/types/cart-response';
 export default function Navbar() {
+  const {data:cartData,isLoading,isError}=useQuery<CartResponse>({
+    queryKey:['get-cart'],
+    queryFn:async ()=>{
+      const resp = await fetch('api/cart')
+      const payload = await resp.json()
+      return payload
+    }
+  })
+
     const {status,data:session}=useSession()
     console.log(status)
     const [isOpen, setisOpen] = useState(false)
@@ -84,7 +95,7 @@ export default function Navbar() {
                   <li className="relative">
                     <Link href={"/cart"}>
                       <span className="bg-green-400 rounded-full text-white p-1 absolute -top-6">
-                        2
+                        {cartData?.numOfCartItems}
                       </span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
