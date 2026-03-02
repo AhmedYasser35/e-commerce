@@ -10,12 +10,15 @@ import { Input } from "@/components/ui/input";
 import { loginSchema } from "@/schema/loginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import * as zod from "zod";
 
 export default function Regester() {
+  const searchParams =useSearchParams()
+  const pathname = searchParams.get("callback-url")
   const [isLoading, setisLoading] = useState(false)
   const form = useForm({
     defaultValues: {
@@ -31,7 +34,7 @@ export default function Regester() {
     const response = await signIn('credentials',{
       email:values.email,
       password:values.password,
-      callbackUrl:'/',
+      callbackUrl:pathname??'/',
       redirect:false
     })
 if(response?.ok){
@@ -46,7 +49,7 @@ setisLoading(false);
   }
   return (
     <>
-      <div className="w-1/2 bg-gray-300 p-10 m-auto">
+      <div className="w-1/2 bg-gray-300 p-10 m-auto mt-20">
         <h2 className="text-green-600 font-bold text-4xl">Login</h2>
         <form onSubmit={form.handleSubmit(submitForm)}>
           <div className="mt-4">
