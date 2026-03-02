@@ -12,8 +12,10 @@ import {
 import userPic from "../../../../assets/images/user.png";
 import Image from "next/image";
 import Link from "next/link";
-
-export function DropdownMenuIcons({logout}) {
+type dropdown = {
+  logout: () => void;
+};
+export function DropdownMenuIcons({logout}:dropdown) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
