@@ -2,12 +2,23 @@
 import { addToCart } from '@/app/services/cart/add-to-cart';
 import { Button } from '@/components/ui/button';
 import { CardFooter } from '@/components/ui/card';
+import { useMutation } from '@tanstack/react-query';
 import React from 'react'
+import toast from 'react-hot-toast';
 export default function AddBtn(productId:any) {
+    const { data, isPending, error, isError , mutate:addProdToCart } = useMutation({
+      mutationFn:addToCart,
+      onSuccess:(data)=>{
+          toast.success(data?.message)
+      },
+      onError:()=>{
+        toast.error("Please login first")
+      }
+    });
   return (
     <>
       <CardFooter className="flex justify-between">
-        <Button onClick={()=>{addToCart(productId)}}>Add to Cart</Button>
+        <Button onClick={()=>{addProdToCart(productId)}}>Add to Cart</Button>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
