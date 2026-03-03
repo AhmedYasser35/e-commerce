@@ -1,13 +1,12 @@
 "use server"
 import { getAccessToken } from "@/schema/access-token";
-import { NextResponse } from "next/server";
 
 export async function updateCart({productId,count}:{productId:string,count:number}) {
     console.log(productId)
     const token:any = await getAccessToken()
-    if(!token|| typeof token.token !=='string'){
-            return NextResponse.json({error:'unauthorized' , status:401})
-        }
+    if(!token){
+        throw new Error("unauthorized");
+    }
     const response=await fetch(`${process.env.API}/cart/${productId}`,{
         method:'PUT',
         headers:{
