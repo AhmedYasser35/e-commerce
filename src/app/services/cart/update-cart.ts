@@ -2,8 +2,8 @@
 import { getAccessToken } from "@/schema/access-token";
 
 export async function updateCart({productId,count}:{productId:string,count:number}) {
-    console.log(productId)
     const token:any = await getAccessToken()
+    console.log('full token',token)
     if(!token){
         throw new Error("unauthorized");
     }

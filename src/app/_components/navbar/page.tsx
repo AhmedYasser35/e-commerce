@@ -12,7 +12,7 @@ export default function Navbar() {
   const {data:cartData,isLoading,isError}=useQuery<CartResponse>({
     queryKey:['get-cart'],
     queryFn:async ()=>{
-      const resp = await fetch('api/cart')
+      const resp = await fetch('/api/cart')
       const payload = await resp.json()
       return payload
     }

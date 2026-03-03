@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req:NextRequest){
     const token = await getToken({req})
-    console.log(token)
+    console.log('the full token', token)
     if(!token|| typeof token.token !=='string'){
         return NextResponse.json({error:'unauthorized' , status:401})
     }
