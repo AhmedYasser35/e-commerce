@@ -1,40 +1,63 @@
 import { productItem } from "@/app/types/productInterface";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Card,
-  CardAction,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
 import AddBtn from "../addBtn/addBtn";
+import AddBtnWishlist from "../addBtnWishlist/addBtnWishlist";
 
-export function ProductCard({prod}:{prod:productItem}) {
+export function ProductCard({ prod }: { prod: productItem }) {
   return (
-    <Card className="relative mx-auto w-full max-w-sm pt-0">
-      <Link href={`/productdetails/${prod._id}`}>
-        <div className="absolute inset-0 z-30 aspect-video" />
-        <img src={prod.imageCover} alt={prod.title} />
-        <CardHeader>
-          <CardAction>
-            <Badge variant="secondary">{prod.category.name}</Badge>
-          </CardAction>
-          <CardTitle>{prod.title.split(" ").slice(0, 2).join(" ")}</CardTitle>
-          <CardDescription>
-            <span className="me-1.5">{prod.ratingsAverage}</span>
-            <span>({prod.ratingsQuantity})</span>
+    <Card className="group relative mx-auto w-full max-w-sm overflow-hidden rounded-xl border border-gray-200 bg-white transition-all hover:shadow-md">
+      <Link href={`/productdetails/${prod._id}`} className="block">
+        {/* IMAGE */}
+        <div className="aspect-square w-full p-4 overflow-hidden">
+          <img
+            src={prod.imageCover}
+            alt={prod.title}
+            className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
 
-            <br />
-            <span className="font-bold text-black text-xl">
-              {prod.price} EGP
-            </span>
+        {/* CONTENT */}
+        <CardHeader className="p-4 pt-0">
+          <Badge
+            variant="secondary"
+            className="w-fit mb-2 bg-gray-100 text-gray-600 border-none"
+          >
+            {prod.category.name}
+          </Badge>
+
+          <CardTitle className="text-base font-bold text-gray-800 line-clamp-1">
+            {prod.title.split(" ").slice(0, 3).join(" ")}
+          </CardTitle>
+
+          <CardDescription className="mt-2">
+            <div className="flex items-center gap-1 text-yellow-500 mb-1">
+              <span className="text-sm font-bold">{prod.ratingsAverage} ★</span>
+              <span className="text-gray-400 text-xs">
+                ({prod.ratingsQuantity})
+              </span>
+            </div>
+
+            <div className="text-lg font-bold text-black">{prod.price} EGP</div>
           </CardDescription>
         </CardHeader>
       </Link>
-        <AddBtn productId={prod._id}/>
+
+      {/* STACKED BUTTONS SECTION */}
+      <div className="p-4 pt-0 flex flex-col gap-2">
+        <div className="w-full">
+          <AddBtn productId={prod._id} />
+        </div>
+        <div className="w-full">
+          <AddBtnWishlist productId={prod._id} />
+        </div>
+      </div>
     </Card>
   );
 }

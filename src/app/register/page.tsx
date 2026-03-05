@@ -1,176 +1,239 @@
-'use client'
-import { Button } from '@/components/ui/button';
-import { Field, FieldError, FieldLabel } from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
-import { schema } from '@/schema/registerSchema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import React, { useState } from 'react'
-import { Controller, useForm } from 'react-hook-form';
-import toast from 'react-hot-toast';
+"use client";
+import { Button } from "@/components/ui/button";
+import { Field, FieldError, FieldLabel } from "@/components/ui/field";
+import { Input } from "@/components/ui/input";
+import { schema } from "@/schema/registerSchema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import React, { useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 import * as zod from "zod";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-export default function Regester() {
-   const [isLoading, setisLoading] = useState(false)
-  const form=useForm({
-    defaultValues :{
-      name:'',
-      email:'',
-      password:'',
-      rePassword:'',
-      phone:'',
+export default function Register() {
+  const [isLoading, setisLoading] = useState(false);
+  const router = useRouter();
 
+  const form = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      rePassword: "",
+      phone: "",
     },
-    resolver:zodResolver(schema),
-    mode:'onBlur'
-  })
+    resolver: zodResolver(schema),
+    mode: "onBlur",
+  });
 
-  function submitForm(values:zod.infer<typeof schema>){
+  async function submitForm(values: zod.infer<typeof schema>) {
     setisLoading(true);
+    try {
+      const response = await fetch(
+        "https://ecommerce.routemisr.com/api/v1/auth/signup",
+        {
+          method: "POST",
+          body: JSON.stringify(values),
+          headers: { "content-type": "application/json" },
+        },
+      );
+      if (response.ok) {
+        toast.success("Account created successfully! 🎉");
+        router.push("/login");
+      } else {
+        toast.error("Email already exists or invalid data");
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setisLoading(false);
+    }
   }
+
   return (
-    <>
-      <div className="w-1/2 bg-gray-300 p-10 m-auto mt-2">
-      <h2 className='text-green-600 font-bold text-4xl'>Register</h2>
-        <form onSubmit={form.handleSubmit(submitForm)}>
-          <div className="mt-4">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-gray-50/50">
+      <div className="w-full max-w-2xl bg-white p-8 md:p-12 rounded-[2.5rem] border border-gray-100 shadow-2xl shadow-gray-200/50">
+        {/* Header Section */}
+        <div className="mb-10 text-left">
+          <h2 className="text-4xl font-black text-gray-900 tracking-tighter">
+            Create Account <span className="text-green-600">.</span>
+          </h2>
+          <p className="text-gray-500 mt-2 font-medium">
+            Join us today! Please enter your details to register.
+          </p>
+        </div>
+
+        <form onSubmit={form.handleSubmit(submitForm)} className="space-y-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* Full Name */}
             <Controller
               name="name"
               control={form.control}
               render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Name:</FieldLabel>
+                <div className="space-y-1">
+                  <FieldLabel className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">
+                    Full Name
+                  </FieldLabel>
                   <Input
                     {...field}
-                    id={field.name}
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Enter your Name"
-                    className="bg-white"
+                    placeholder="John Doe"
+                    className={`h-12 rounded-xl border-gray-100 bg-gray-50 focus:bg-white transition-all ${fieldState.invalid ? "border-red-500" : ""}`}
                   />
-
                   {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
+                    <p className="text-xs text-red-500 ml-1 mt-1">
+                      {fieldState.error?.message}
+                    </p>
                   )}
-                </Field>
+                </div>
               )}
             />
-          </div>
 
-          <div className="mt-4">
-            <Controller
-              name="email"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Email:</FieldLabel>
-                  <Input
-                    {...field}
-                    id={field.name}
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Enter your Email"
-                    className="bg-white"
-                  />
-
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </div>
-
-          <div className="mt-4">
-            <Controller
-              name="password"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Password:</FieldLabel>
-                  <Input
-                    type='password'
-                    {...field}
-                    id={field.name}
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Enter your Password"
-                    className="bg-white"
-                  />
-
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </div>
-
-          <div className="mt-4">
-            <Controller
-              name="rePassword"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>rePassword:</FieldLabel>
-                  <Input
-                    type="password"
-                    {...field}
-                    id={field.name}
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Enter your Password again"
-                    className="bg-white"
-                  />
-
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </div>
-
-          <div className="mt-4">
+            {/* Phone */}
             <Controller
               name="phone"
               control={form.control}
               render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>phone:</FieldLabel>
+                <div className="space-y-1">
+                  <FieldLabel className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">
+                    Phone Number
+                  </FieldLabel>
                   <Input
                     {...field}
-                    id={field.name}
-                    aria-invalid={fieldState.invalid}
-                    placeholder="Enter your phone number"
-                    className="bg-white"
+                    placeholder="010XXXXXXXX"
+                    className={`h-12 rounded-xl border-gray-100 bg-gray-50 focus:bg-white transition-all ${fieldState.invalid ? "border-red-500" : ""}`}
                   />
-
                   {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
+                    <p className="text-xs text-red-500 ml-1 mt-1">
+                      {fieldState.error?.message}
+                    </p>
                   )}
-                </Field>
+                </div>
               )}
             />
           </div>
 
-          <Button disabled={isLoading} type="submit" className="mt-7 w-full">
-            {isLoading ? (
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="size-6 animate-spin"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+          {/* Email */}
+          <Controller
+            name="email"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <div className="space-y-1">
+                <FieldLabel className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">
+                  Email Address
+                </FieldLabel>
+                <Input
+                  {...field}
+                  type="email"
+                  placeholder="name@example.com"
+                  className={`h-12 rounded-xl border-gray-100 bg-gray-50 focus:bg-white transition-all ${fieldState.invalid ? "border-red-500" : ""}`}
                 />
-              </svg>
+                {fieldState.invalid && (
+                  <p className="text-xs text-red-500 ml-1 mt-1">
+                    {fieldState.error?.message}
+                  </p>
+                )}
+              </div>
+            )}
+          />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {/* Password */}
+            <Controller
+              name="password"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <div className="space-y-1">
+                  <FieldLabel className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">
+                    Password
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    type="password"
+                    placeholder="••••••••"
+                    className={`h-12 rounded-xl border-gray-100 bg-gray-50 focus:bg-white transition-all ${fieldState.invalid ? "border-red-500" : ""}`}
+                  />
+                  {fieldState.invalid && (
+                    <p className="text-xs text-red-500 ml-1 mt-1">
+                      {fieldState.error?.message}
+                    </p>
+                  )}
+                </div>
+              )}
+            />
+
+            {/* Re-Password */}
+            <Controller
+              name="rePassword"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <div className="space-y-1">
+                  <FieldLabel className="text-xs font-bold uppercase tracking-widest text-gray-400 ml-1">
+                    Confirm Password
+                  </FieldLabel>
+                  <Input
+                    {...field}
+                    type="password"
+                    placeholder="••••••••"
+                    className={`h-12 rounded-xl border-gray-100 bg-gray-50 focus:bg-white transition-all ${fieldState.invalid ? "border-red-500" : ""}`}
+                  />
+                  {fieldState.invalid && (
+                    <p className="text-xs text-red-500 ml-1 mt-1">
+                      {fieldState.error?.message}
+                    </p>
+                  )}
+                </div>
+              )}
+            />
+          </div>
+
+          <Button
+            disabled={isLoading}
+            type="submit"
+            className="mt-8 w-full h-14 rounded-2xl bg-green-600 hover:bg-green-700 text-white font-bold text-lg shadow-lg shadow-green-200 transition-all active:scale-[0.98]"
+          >
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Creating Account...
+              </span>
             ) : (
-              "Submit"
+              "Create Account"
             )}
           </Button>
+
+          <div className="mt-8 text-center">
+            <p className="text-sm text-gray-500">
+              Already have an account?{" "}
+              <Link
+                href="/login"
+                className="font-bold text-green-600 hover:underline underline-offset-4"
+              >
+                Sign In
+              </Link>
+            </p>
+          </div>
         </form>
       </div>
-    </>
+    </div>
   );
 }

@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,10 +21,6 @@ export function DropdownMenuIcons({logout}:dropdown) {
         <Image alt="user" className="cursor-pointer" width={30} height={30} src={userPic} />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuItem>
-          <UserIcon />
-          <Link href={'/profile'}>profile</Link>
-        </DropdownMenuItem>
         <DropdownMenuItem variant="destructive">
           <LogOutIcon />
           <span onClick={logout}>logout</span>

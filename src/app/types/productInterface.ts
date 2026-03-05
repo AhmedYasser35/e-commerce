@@ -40,3 +40,14 @@ export interface Brand {
   slug: string;
   image: string;
 }
+
+
+
+export interface BrandDet {
+  _id: string;
+  name: string;
+  slug: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+}

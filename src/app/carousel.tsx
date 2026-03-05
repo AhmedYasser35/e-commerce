@@ -7,13 +7,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { AnyARecord } from "node:dns";
 
 export function Carousel1({image}:{image:any}) {
-  console.log(image[0])
-  console.log(image)
   return (
-    <Carousel className="w-full max-w-48 sm:max-w-xs">
+    <Carousel opts={{loop:true}} className="w-full max-w-48 sm:max-w-xs">
       <CarouselContent>
         {Array.from({ length: 3 }).map((_, index) => (
           <CarouselItem key={index}>
@@ -29,8 +26,7 @@ export function Carousel1({image}:{image:any}) {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+
     </Carousel>
   );
 }
