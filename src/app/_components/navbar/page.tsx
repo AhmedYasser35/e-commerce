@@ -151,7 +151,7 @@ export default function Navbar() {
                   {/* Wishlist */}
                   <li>
                     <Link
-                      href="/wishlist"
+                      href="/wishList"
                       className="text-gray-700 hover:text-red-500"
                     >
                       <svg
