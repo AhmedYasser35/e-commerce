@@ -25,11 +25,8 @@ export default function CategoryCard({ data }: { data: Category[] }) {
                   alt={cat.name}
                   priority
                 />
-                {/* Subtle Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-
-              {/* TITLE */}
               <CardHeader className="px-2 py-4">
                 <CardTitle className="text-lg font-bold text-center text-gray-800 group-hover:text-green-600 transition-colors uppercase tracking-tight">
                   {cat.name}

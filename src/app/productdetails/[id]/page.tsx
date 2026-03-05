@@ -17,17 +17,13 @@ export default async function ProductPage(props: any) {
   return (
     <div className="container mx-auto px-4 py-8 lg:py-16">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 items-start">
-        {/* LEFT: STICKY GALLERY */}
         <div className="lg:col-span-1 md:sticky md:top-24">
           <div className="rounded-2xl overflow-hidden border border-gray-100 shadow-sm bg-white p-4">
             <Carousel1 image={singleProduct.images} />
           </div>
         </div>
-
-        {/* RIGHT: PRODUCT INFO */}
         <div className="lg:col-span-2">
           <div className="space-y-6">
-            {/* STATIC CATEGORY (No Link) */}
             <div className="flex items-center gap-2">
               <Badge
                 variant="outline"
@@ -45,7 +41,6 @@ export default async function ProductPage(props: any) {
               )}
             </div>
 
-            {/* TITLE & RATINGS */}
             <div className="space-y-3">
               <h1 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight">
                 {singleProduct.title}
@@ -77,7 +72,6 @@ export default async function ProductPage(props: any) {
 
             <hr className="border-gray-100" />
 
-            {/* DESCRIPTION */}
             <div className="text-gray-600 leading-relaxed max-w-2xl">
               <h3 className="text-gray-900 font-bold mb-2 uppercase text-xs tracking-widest">
                 Description
@@ -85,7 +79,6 @@ export default async function ProductPage(props: any) {
               <p>{singleProduct.description}</p>
             </div>
 
-            {/* PRICE & ACTIONS */}
             <div className="bg-white p-6 rounded-3xl border-2 border-gray-50 shadow-sm space-y-6">
               <div>
                 <span className="text-gray-400 text-xs font-bold uppercase tracking-widest mb-1 block">
@@ -101,13 +94,11 @@ export default async function ProductPage(props: any) {
                 </div>
               </div>
 
-              {/* ACTION BUTTONS STACKED */}
               <div className="flex flex-col gap-3 max-w-md">
                 <AddBtn productId={singleProduct._id} />
                 <AddBtnWishlist productId={singleProduct._id} />
               </div>
 
-              {/* TRUST BADGES */}
               <div className="pt-4 border-t border-gray-50 flex flex-wrap gap-6">
                 <div className="flex items-center gap-2 text-[11px] font-bold text-gray-400 uppercase tracking-tighter">
                   <svg

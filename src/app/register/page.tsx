@@ -54,7 +54,6 @@ export default function Register() {
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 bg-gray-50/50">
       <div className="w-full max-w-2xl bg-white p-8 md:p-12 rounded-[2.5rem] border border-gray-100 shadow-2xl shadow-gray-200/50">
-        {/* Header Section */}
         <div className="mb-10 text-left">
           <h2 className="text-4xl font-black text-gray-900 tracking-tighter">
             Create Account <span className="text-green-600">.</span>
@@ -66,7 +65,6 @@ export default function Register() {
 
         <form onSubmit={form.handleSubmit(submitForm)} className="space-y-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* Full Name */}
             <Controller
               name="name"
               control={form.control}
@@ -89,7 +87,6 @@ export default function Register() {
               )}
             />
 
-            {/* Phone */}
             <Controller
               name="phone"
               control={form.control}
@@ -113,7 +110,6 @@ export default function Register() {
             />
           </div>
 
-          {/* Email */}
           <Controller
             name="email"
             control={form.control}
@@ -138,7 +134,6 @@ export default function Register() {
           />
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {/* Password */}
             <Controller
               name="password"
               control={form.control}
@@ -162,7 +157,6 @@ export default function Register() {
               )}
             />
 
-            {/* Re-Password */}
             <Controller
               name="rePassword"
               control={form.control}
