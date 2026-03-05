@@ -8,7 +8,7 @@ export async function PayOrderOnline(cartId:{cartId:string}, shippingAddress:Shi
     throw new Error("unauthorized");
   }
   const response = await fetch(
-    `${process.env.API}/orders/checkout-session/${cartId.cartId}`,
+    `${process.env.API}/orders/checkout-session/${cartId.cartId}?url=${process.env.URL}`,
     {
       method: "POST",
       headers: {

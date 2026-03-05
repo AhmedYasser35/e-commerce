@@ -10,6 +10,7 @@ import { clearCart } from "../services/cart/clear-cart";
 import cartImg from "../../../assets/images/cart2.jpg";
 import Image from "next/image";
 import Link from "next/link";
+import GetData from "./../allorders/getData";
 
 export default function Cart() {
   const queryClient = useQueryClient();
@@ -44,20 +45,20 @@ export default function Cart() {
       queryClient.invalidateQueries({ queryKey: ["get-cart"] });
     },
   });
-
+  
   function handleUpdate(productId: string, count: number) {
     if (count < 1) return;
     updateItem({ productId, count });
   }
-
+  
   if (isLoading) return <div className="p-10 text-center">Loading...</div>;
-
+  if(!cartData){
+    return
+  }
   return (
     <div className="container mx-auto p-4">
       {cartData && cartData.numOfCartItems > 0 ? (
-        // Mobile: Column (stacked) | Desktop: Row
         <div className="flex flex-col lg:flex-row gap-6 mt-5">
-          {/* LEFT: PRODUCTS LIST */}
           <div className="w-full lg:w-3/4">
             <div className="overflow-x-auto rounded-xl border border-gray-300 shadow-sm">
               <table className="w-full text-sm text-left text-gray-600">
@@ -145,7 +146,6 @@ export default function Cart() {
             </button>
           </div>
 
-          {/* RIGHT: CHECKOUT SUMMARY (Centered Button & Bordered Box) */}
           <div className="w-full lg:w-1/4">
             <div className="p-6 border-2 border-gray-300 rounded-2xl bg-white shadow-sm flex flex-col items-center sticky top-24">
               <h2 className="text-2xl font-bold text-gray-800 mb-6 w-full text-center border-b pb-4">
@@ -167,12 +167,11 @@ export default function Cart() {
                 </span>
               </div>
 
-              {/* Centered Checkout Button */}
               <Link
                 href={`/checkout/${cartData.cartId}`}
                 className="w-full flex justify-center"
               >
-                <Button className="w-full md:w-3/4 lg:w-full py-6 text-lg font-bold bg-green-600 hover:bg-green-700 rounded-xl transition-all shadow-md active:scale-95">
+                <Button onClick={()=>{   GetData(cartData)   }} className="w-full md:w-3/4 lg:w-full py-6 text-lg font-bold bg-green-600 hover:bg-green-700 rounded-xl transition-all shadow-md active:scale-95">
                   Check Out
                 </Button>
               </Link>
