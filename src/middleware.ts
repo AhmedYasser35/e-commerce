@@ -1,7 +1,7 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-const protectedPages = ["/cart", "/profile", "/wishList"];
+const protectedPages = ["/cart", "/profile", "/wishlist"];
 const authPages = ["/login", "/register"];
 
 export async function middleware(req:NextRequest) {
